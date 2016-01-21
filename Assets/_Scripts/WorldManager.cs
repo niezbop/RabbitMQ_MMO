@@ -5,7 +5,7 @@ public class WorldManager : MonoBehaviour {
     public Transform player;
 	// Use this for initialization
 	void Start () {
-        Instantiate(player, new Vector3(10, 0, 10), Quaternion.identity);
+        
     }
 	
 	// Update is called once per frame
