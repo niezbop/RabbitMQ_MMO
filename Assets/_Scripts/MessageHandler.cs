@@ -12,7 +12,8 @@ public class MessageHandler {
 
 	public MessageHandler() {
 		cf.Uri = uri;
-		connection = cf.CreateConnection ();
+        cf.SocketFactory = new ConnectionFactory.ObtainSocket(CustomSocketFactory.GetSocket);
+        connection = cf.CreateConnection ();
 		channel = connection.CreateModel ();
 		channel.QueueDeclare(queue: "hello",
 			durable: false,
