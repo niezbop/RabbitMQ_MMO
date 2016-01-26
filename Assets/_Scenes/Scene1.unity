@@ -391,6 +391,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1704888252}
   - 114: {fileID: 1704888251}
+  - 114: {fileID: 1704888253}
   m_Layer: 0
   m_Name: MessageManager
   m_TagString: Untagged
@@ -421,6 +422,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &1704888253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1704888250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bdc80820a0144d7ba2160c979d330a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wm: {fileID: 1753424021}
 --- !u!1 &1707508140
 GameObject:
   m_ObjectHideFlags: 0
@@ -523,7 +536,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1a04045f4690ec409fe8ee926e5a199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 426838, guid: 24027424df93ad347999ea7e2e7ce94b, type: 2}
+  characterModel: {fileID: 0}
 --- !u!4 &1753424022
 Transform:
   m_ObjectHideFlags: 0
