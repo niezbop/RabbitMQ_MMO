@@ -7,9 +7,10 @@ public class Messages : MonoBehaviour {
 
 	// Use this for initialization
 	MessageHandler mh;
-	void Start () {
+	IEnumerator Start () {
 		mh = new MessageHandler ();
-		mh.SendMessage ("Coucou, je start");
+		//mh.SendMessage ("Coucou, je start");
+		yield return StartCoroutine(mh.startListening ());
 	}
 	
 	// Update is called once per frame
