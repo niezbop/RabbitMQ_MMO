@@ -4,44 +4,65 @@ using System.Collections.Generic;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-public class PositionQueue : MonoBehaviour
+public class PositionQueue
 {
-	private Dictionary<string, List<PlayerPosition>> positions;
-	private MessageHandler mh;
+	private static PositionQueue instance;
 
-	public WorldManager wm;
+	private Dictionary<string, PlayerPosition> positions;
 
-	public System.Collections.IEnumerator start()
+	private PositionQueue()
 	{
-		this.positions = new Dictionary<string, List<PlayerPosition>>();
-		mh = new MessageHandler ();
-		yield return StartCoroutine(mh.startListening ());
+		positions = new Dictionary<string, PlayerPosition>();
+	}
+
+	public static PositionQueue Instance
+	{
+		get 
+		{
+			if (instance == null)
+			{
+				instance = new PositionQueue();
+			}
+
+			return instance;
+		}
 	}
 
 	public void AddPosition(byte[] body)
 	{
 		PlayerPosition position = PlayerPosition.parseData(body);
-		if (position != null && position.id != null) {
-			if (positions.ContainsKey (position.id)) {
-				positions [position.id].Add (position);
-			} else {
-				positions [position.id] = new List<PlayerPosition> ();
-				positions [position.id].Add (position);
-				wm.CreatePlayer ();
-			}
-		} else {
+
+		if (position != null && position.id != null)
+		{
+			positions [position.id] = position;
+		}
+		else
+		{
 			Debug.Log ("Message etrange recu: " + body.ToString());
 		}
 	}
 
+	public void AddPosition(PlayerPosition position)
+	{
+
+		if (position != null && position.id != null)
+		{
+			positions [position.id] = position;
+		}
+		else
+		{
+			Debug.Log ("Shouldn't happend: " + position);
+		}
+	}
+
 	// Return the dictionary of list of position of all player
-	public Dictionary<string, List<PlayerPosition>> getAllPosition()
+	public Dictionary<string, PlayerPosition> getAllPosition()
 	{
 		return positions;
 	}
 
 	// Return the list of position for the given player
-	public List<PlayerPosition> getPositionForPlayer(string playerId)
+	public PlayerPosition getPositionForPlayer(string playerId)
 	{
 		if (!positions.ContainsKey (playerId))
 			return null;

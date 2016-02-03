@@ -4,7 +4,8 @@ using RabbitMQ.Client.Events;
 using System.Text;
 using System.Collections.Generic;
 
-public class MessageHandler {
+public class MessageHandler
+{
 
 	private ConnectionFactory cf = new ConnectionFactory();
 	private readonly string uri = "amqp://guest:guest@mbpmx.fr:5672/";
@@ -16,7 +17,8 @@ public class MessageHandler {
 	public static readonly string POSITION_TAG_NAME = "position";
 	public static readonly string JOIN_Q_NAME = "join";
 
-	public MessageHandler() {
+	public MessageHandler()
+	{
 		cf.Uri = uri;
         cf.SocketFactory = new ConnectionFactory.ObtainSocket(CustomSocketFactory.GetSocket);
         connection = cf.CreateConnection ();
@@ -37,20 +39,26 @@ public class MessageHandler {
 		);
 	}
 
-	public void SendPosition(PlayerPosition position) {
-		channel.BasicPublish(exchange: "",
+	public void SendPosition(PlayerPosition position)
+	{
+		channel.BasicPublish(
+			exchange: POSITION_EXCHANGE_NAME,
 			routingKey: POSITION_TAG_NAME,
 			basicProperties: null,
-			body: position.ToMessageData());
+			body: position.ToMessageData()
+		);
 	}
 
-	public void SendMessage(string message) {
+	public void SendMessage(string message)
+	{
 		var body = Encoding.UTF8.GetBytes(message);
 
-		channel.BasicPublish(exchange: "",
+		channel.BasicPublish(
+			exchange: "",
 			routingKey: POSITION_TAG_NAME,
 			basicProperties: null,
-			body: body);
+			body: body
+		);
 	}
 
 	// called at the end of the PositionQueue constructor
@@ -65,8 +73,7 @@ public class MessageHandler {
 		consumer.Received += (model, ea) =>
 		{
 			var body = ea.Body;
-			var message = Encoding.UTF8.GetString(body);
-			Debug.Log(" [x] {0}" + message);
+			PositionQueue.Instance.AddPosition(body);
 		};
 
 		channel.BasicConsume(
