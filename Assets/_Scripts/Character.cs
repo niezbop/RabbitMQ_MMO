@@ -24,28 +24,23 @@ public class Character : MonoBehaviour
 		// Here, you update the position.
 		PlayerPosition position = posQ.getPositionForPlayer(id);
 
-		if ( lastPosition != null && ( lastPosition.x != position.x || lastPosition.y != position.y ) )
+		if ( lastPosition != null && ( lastPosition.x != position.x || lastPosition.y != position.y || lastPosition.z != position.z ) )
 		{
 			// move
 			CharacterController controller = GetComponent<CharacterController>();
 
-			/*if (controller.isGrounded)
+			if (controller.isGrounded)
 			{
-				moveDirection = new Vector3(position.x - transform.position.x, 0, position.y - transform.position.z);
+				moveDirection = new Vector3(position.x - transform.position.x, position.y-transform.position.y, position.z - transform.position.z);
 				moveDirection = transform.TransformDirection(moveDirection);
 				moveDirection *= speed;
-				Debug.Log (moveDirection);
-
-				if (Input.GetButton("Jump"))
-					moveDirection.y = jumpSpeed;
 
 			}
-			controller.Move(moveDirection * Time.deltaTime);*/
+			moveDirection.y -= gravity * Time.deltaTime;
 
-			moveDirection = transform.TransformPoint(new Vector3 (position.x, 0, position.y));
-			controller.Move (moveDirection);
+			controller.Move(moveDirection * Time.deltaTime);
 
-			lastPosition = position;
+			lastPosition = new PlayerPosition(id, transform.position.x, transform.position.y, transform.position.z);
 		}
 	}
 }
