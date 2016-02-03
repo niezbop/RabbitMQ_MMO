@@ -1,22 +1,28 @@
 ﻿using System.Text;
 
-public class PlayerPosition {
+public class PlayerPosition
+{
 	public string id;
 	public float x;
 	public float y;
 
-	public PlayerPosition(string id, float x, float y) {
+	public PlayerPosition(string id, float x, float y)
+	{
 		this.id = id;
 		this.x = x;
 		this.y = y;
 	}
 
-	static public PlayerPosition parseData(byte[] messageData) {
+	static public PlayerPosition parseData(byte[] messageData)
+	{
 		string message = Encoding.UTF8.GetString (messageData);
 		string[] pieces = message.Split(',');
-		if (pieces.Length != 3) {
+
+		if (pieces.Length != 3)
+		{
 			return null;
 		}
+
 		float x = float.Parse (pieces [1]);
 		float y = float.Parse (pieces [2]);
 
@@ -24,7 +30,8 @@ public class PlayerPosition {
 	}
 
 	// Used to convert position to string 
-	public byte[] ToMessageData() {
+	public byte[] ToMessageData()
+	{
 		return Encoding.UTF8.GetBytes( id + "," + x.ToString () + "," + y.ToString ());
 	}
 }
