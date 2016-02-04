@@ -45,13 +45,9 @@ public class PositionQueue
 	public void AddPosition(PlayerPosition position)
 	{
 
-		if (position != null && position.id != null)
+		if (position != null && position.id != null && position.id != "")
 		{
 			positions [position.id] = position;
-		}
-		else
-		{
-			Debug.Log ("Shouldn't happend: " + position);
 		}
 	}
 

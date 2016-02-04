@@ -6,18 +6,21 @@ public class MovementController : MonoBehaviour
     public float speed = 6.0F;
     public float jumpSpeed = 8.0F;
 	public float gravity = 20.0F;
-	public string id = System.Guid.NewGuid().ToString();
+	public string id;
 
 	private MessageHandler mh;
     private Vector3 moveDirection = Vector3.zero;
 	private PositionQueue posQ = PositionQueue.Instance;
 	private PlayerPosition lastPos;
 
-	void Start()
+	IEnumerator Start()
 	{
-		lastPos = new PlayerPosition (id, 0, 0);
-		posQ.AddPosition (new PlayerPosition (id, 0, 0));
+		Application.runInBackground = true;
+		id = System.Guid.NewGuid().ToString();
+		lastPos = new PlayerPosition (id, 0, 0, 0);
+		posQ.AddPosition (new PlayerPosition (id, 0, 0, 0));
 		mh = new MessageHandler ();
+		yield return StartCoroutine(mh.startListening ());
 	}
 
 	void Update()
@@ -38,8 +41,8 @@ public class MovementController : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
 
 		// Send position
-		PlayerPosition pos = new PlayerPosition(id, transform.position.x, transform.position.z);
-		if (pos.x != lastPos.x || pos.y != lastPos.y) {
+		PlayerPosition pos = new PlayerPosition(id, transform.position.x, transform.position.y, transform.position.z);
+		if (pos.x != lastPos.x || pos.y != lastPos.y || pos.z != lastPos.z) {
 			lastPos = pos;
 			mh.SendPosition (pos);
 		}
